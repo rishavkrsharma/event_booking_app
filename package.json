@@ -19,7 +19,6 @@
     "react-native": "0.70.5",
     "react-native-gesture-handler": "~2.8.0",
     "react-native-loading-spinner-overlay": "^3.0.1",
-    "react-native-qrcode-svg": "^6.1.2",
     "react-native-reanimated-zoom": "^0.3.3"
   },
   "devDependencies": {

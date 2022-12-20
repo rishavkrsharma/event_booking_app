@@ -1,10 +1,8 @@
 import {
   Text,
   View,
-  SafeAreaView,
   FlatList,
   Pressable,
-  Alert,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import React, { useContext, useState } from "react";
@@ -13,7 +11,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MoviesCards } from "../Context";
 import Spinner from "react-native-loading-spinner-overlay";
-import { ScrollView } from "react-native-gesture-handler";
 
 const TheatreScreen = () => {
   const route = useRoute();
@@ -25,6 +22,8 @@ const TheatreScreen = () => {
   const noOfSeats = seats.length;
   const priceValue = noOfSeats * 240;
   const total = seats.length > 0 ? fee + noOfSeats * 240 : 0;
+  const code = Math.random().toString(36).substring(6).toUpperCase();
+  const idno = Math.random().toString(36).substring(3).toUpperCase();
 
   const onSeatSelect = (item) => {
     const seatSelected = seats.find((seat) => seat === item);
@@ -45,27 +44,36 @@ const TheatreScreen = () => {
       </View>
     );
   };
+
   const subscribe = () => {
-    setSpin(true);
-    occupied.push(...seats);
-    setTimeout(() => {
-      setSpin(false);
-      navigation.navigate("Ticket", {
-        name: route.params.name,
-        timeSelected: route.params.timeSelected,
-        total: total,
-        image: route.params.image,
-        date: route.params.date,
-        selectedSeats: displaySeats,
-        priceValue: priceValue,
-        genre: route.params.genre,
-      });
-    }, 2000);
-    setSeats([]);
+    if(seats.length == 0){
+      alert('Please select Seats');
+    } else {
+      setSpin(true);
+      occupied.push(...seats);
+      setTimeout(() => {
+        setSpin(false);
+        navigation.navigate("Ticket", {
+          name: route.params.name,
+          timeSelected: route.params.timeSelected,
+          total: total,
+          image: route.params.image,
+          date: route.params.date,
+          selectedSeats: displaySeats,
+          priceValue: priceValue,
+          genre: route.params.genre,
+          code: code,
+          id: idno,
+        });
+      }, 2000);
+      setSeats([]);
+    }    
   };
-  
+
   return (
-    <ScrollView>
+    <View
+      style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: 0 }}
+    >
       <Spinner
         visible={spin}
         textStyle={{
@@ -142,6 +150,7 @@ const TheatreScreen = () => {
           fontSize: 15,
           fontWeight: "500",
           marginTop: 20,
+          marginBottom: 5,
           color: "black",
         }}
       >
@@ -149,38 +158,53 @@ const TheatreScreen = () => {
       </Text>
 
       <FlatList
-          numColumns={10}
-          data={route.params.tableSeats}
-          keyExtractor={(item, index) => item.idx}
-          renderItem={({ item }) => (
-            <View style={{ flex: 1, flexDirection: "column", margin: 1 }}>
-              <Pressable
-                onPress={() => onSeatSelect(item.seat)}
-                style={{
-                  marginHorizontal: 4,
-                  marginVertical: 4,
-                  borderColor: "gray",
-                  borderWidth: 0.5,
-                  borderRadius: 5,
-                }}
-              >
-                {seats.includes(item.seat) ? (
-                  <Text style={{ backgroundColor: "#ffc40c", padding: 3, textAlign: "center" }}>
-                    {item.seat}
-                  </Text>
-                ) : occupied.includes(item.seat) ? (
-                  <Text style={{ backgroundColor: "#989898", padding: 3, textAlign: "center" }}>
-                    {item.seat}
-                  </Text>
-                ) : (
-                  <Text style={{ padding: 3, textAlign: "center" }}>
-                    {item.seat}
-                  </Text>
-                )}
-              </Pressable>
-            </View>
-          )}
-        />
+        style={{
+          flexGrow: 0,
+        }}
+        numColumns={10}
+        data={route.params.tableSeats}
+        keyExtractor={(item, index) => item.idx}
+        renderItem={({ item }) => (
+          <View style={{ flex: 1, flexDirection: "column", margin: 1 }}>
+            <Pressable
+              onPress={() => onSeatSelect(item.seat)}
+              style={{
+                marginHorizontal: 4,
+                marginVertical: 4,
+                borderColor: "gray",
+                borderWidth: 0.5,
+                borderRadius: 5,
+              }}
+            >
+              {seats.includes(item.seat) ? (
+                <Text
+                  style={{
+                    backgroundColor: "#ffc40c",
+                    padding: 3,
+                    textAlign: "center",
+                  }}
+                >
+                  {item.seat}
+                </Text>
+              ) : occupied.includes(item.seat) ? (
+                <Text
+                  style={{
+                    backgroundColor: "#989898",
+                    padding: 3,
+                    textAlign: "center",
+                  }}
+                >
+                  {item.seat}
+                </Text>
+              ) : (
+                <Text style={{ padding: 3, textAlign: "center" }}>
+                  {item.seat}
+                </Text>
+              )}
+            </Pressable>
+          </View>
+        )}
+      />
 
       <View
         style={{
@@ -279,7 +303,7 @@ const TheatreScreen = () => {
           </Text>
         </Pressable>
       </Pressable>
-    </ScrollView>
+    </View>
   );
 };
 

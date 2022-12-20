@@ -9,63 +9,56 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-
 const { width, height } = Dimensions.get("window");
 const defaultHeight = height * 0.75;
-let selectedDate = "";
+import moment from "moment";
 
 export default class TicketCard extends Component {
   state = {
-    // Animates slide ups and downs when popup open or closed
     position: new Animated.Value(this.props.isOpen ? 0 : height),
-    // Backdrop opacity
     opacity: new Animated.Value(0),
-    // Popup height that can be changed by pulling it up or down
     height: defaultHeight,
-    // Visibility flag
     visible: this.props.isOpen,
   };
 
-  // Handle isOpen changes to either open or close popup
   UNSAFE_componentWillReceiveProps(nextProps) {
-    // isOpen prop changed to true from false
     if (!this.props.isOpen && nextProps.isOpen) {
       this.animateOpen();
-    }
-    // isOpen prop changed to false from true
-    else if (this.props.isOpen && !nextProps.isOpen) {
+    } else if (this.props.isOpen && !nextProps.isOpen) {
       this.animateClose();
     }
   }
 
-  // Open popup
   animateOpen() {
-    // Update state first
     this.setState({ visible: true }, () => {
       Animated.parallel(
         [
-          // Animate opacity
-          Animated.timing(this.state.opacity, { toValue: 0.5 }),
-          // And slide up
-          Animated.timing(this.state.position, { toValue: 0 }),
+          Animated.timing(this.state.opacity, {
+            toValue: 0.5,
+            useNativeDriver: true,
+          }),
+          Animated.timing(this.state.position, {
+            toValue: 0,
+            useNativeDriver: true,
+          }),
         ],
         { useNativeDriver: true }
       ).start();
     });
   }
 
-  // Close popup
   animateClose() {
-    Animated.parallel(
-      [
-        Animated.timing(this.state.opacity, { toValue: 0 }),
-        // Slide down
-        Animated.timing(this.state.position, { toValue: height }),
-      ],
-      { useNativeDriver: true }
-    ).start(() =>
+    Animated.parallel([
+      Animated.timing(this.state.opacity, {
+        toValue: 0,
+        useNativeDriver: true,
+      }),
+      Animated.timing(this.state.position, {
+        toValue: height,
+        useNativeDriver: true,
+      }),
+    ]).start(() =>
       this.setState({
-        // Reset to default values
         height: defaultHeight,
         visible: false,
       })
@@ -73,17 +66,15 @@ export default class TicketCard extends Component {
   }
 
   render() {
-    const { movie, onBook } = this.props;
+    const { movie, cancelTicket } = this.props;
 
-    // Pull out movie data
-    const { title, genre, poster, time, seats, hall } = movie || {};
-    // Render nothing if not visible
+    const { title, poster, genre, time, date, seats, price, total, code } =
+      movie || {};
     if (!this.state.visible) {
       return null;
     }
     return (
       <View style={styles.container}>
-        {/* Closes popup if user taps on semi-transparent backdrop */}
         <TouchableWithoutFeedback onPress={this.props.onClose}>
           <Animated.View
             style={[styles.backdrop, { opacity: this.state.opacity }]}
@@ -93,9 +84,7 @@ export default class TicketCard extends Component {
           style={[
             styles.modal,
             {
-              // Animates height
               height: this.state.height,
-              // Animates position on the screen
               transform: [
                 { translateY: this.state.position },
                 { translateX: 0 },
@@ -103,73 +92,191 @@ export default class TicketCard extends Component {
             },
           ]}
         >
-          {/* <View style={styles.content}>
+          <View style={styles.content}>
             <View style={styles.movieContainer}>
-              <View style={styles.imageContainer}>
-                <Image source={{ uri: poster }} style={styles.image} />
-              </View>
-
-              <View
-                style={{
-                  backgroundColor: "transparent",
-                }}
+            <View
+              style={{
+                padding: 10,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text
+                style={{ fontSize: 16, fontWeight: "500" }}
+                numberOfLines={1}
               >
-                <Text
-                  style={{
-                    fontSize: 18,
-                  }}
-                >
-                  {title}
-                </Text>
-                <Text
-                  style={{
-                    color: "#BBBBBB",
-                    fontSize: 14,
-                  }}
-                >
-                  {genre}
-                </Text>
-              </View>
+                {title}
+              </Text>
             </View>
 
-            <View>
-              <Text
-                style={{
-                  fontSize: 16,
-                }}
-              >
-                Day
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginHorizontal: 10,
+              }}
+            >
+              <Text style={{ fontSize: 16, color: "gray" }}>{genre}</Text>
+
+              <Text style={{ color: "green", fontSize: 14 }}>
+                TICKET CONFIRMED
               </Text>
-              <HorizontalDatepicker
-                mode="gregorian"
-                startDate={new Date("2022-12-14")}
-                endDate={new Date("2022-12-24")}
-                initialSelectedDate={new Date("2022-12-12")}
-                onSelectedDateChange={(date) => (selectedDate = date)}
-                selectedItemWidth={170}
-                unselectedItemWidth={38}
-                itemHeight={38}
-                itemRadius={10}
-                selectedItemTextStyle={styles.selectedItemTextStyle}
-                unselectedItemTextStyle={styles.selectedItemTextStyle}
-                selectedItemBackgroundColor="#222831"
-                unselectedItemBackgroundColor="#ececec"
-                flatListContainerStyle={{ backgroundColor: "transparent" }}
+            </View>
+
+            <Text
+              style={{
+                borderRadius: 1,
+                borderStyle: "dashed",
+                borderColor: "#DCDCDC",
+                height: 1,
+                borderWidth: 0.5,
+                margin: 10,
+              }}
+            />
+
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <View style={{ marginTop: 2, marginLeft: 10 }}>
+                <Text
+                  style={{ color: "gray", fontSize: 15, fontWeight: "500" }}
+                >
+                  DATE & TIME
+                </Text>
+                <Text style={{ marginVertical: 4, fontSize: 16 }}>{time}</Text>
+                <Text>{moment(date).utc().format("DD/MM/YYYY")}</Text>
+              </View>
+
+              <Image
+                style={{
+                  aspectRatio: 2 / 1,
+                  height: 60,
+                  borderRadius: 6,
+                  marginRight: 10,
+                }}
+                source={{ uri: poster }}
               />
-              <Text
-                style={{
-                  fontSize: 16,
-                }}
-              >
-                Showtime • {time}
-              </Text>
             </View>
-          </View> */}
 
-          {/* Footer */}
+            <Text
+              style={{
+                borderRadius: 1,
+                borderStyle: "dashed",
+                borderColor: "#DCDCDC",
+                height: 1,
+                borderWidth: 0.5,
+                margin: 10,
+              }}
+            />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <View style={{ marginLeft: 14 }}>
+                <Text>AUDI NO</Text>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    marginTop: 6,
+                  }}
+                >
+                  2
+                </Text>
+              </View>
+
+              <View>
+                <Text>TICKETS</Text>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    marginTop: 6,
+                  }}
+                >
+                  {seats.length}
+                </Text>
+              </View>
+
+              <View style={{ marginRight: 15 }}>
+                <Text>SEATS</Text>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  {seats.map((item, index) => (
+                    <Text
+                      style={{
+                        margin: 3,
+                        fontSize: 15,
+                        fontWeight: "bold",
+                        marginTop: 6,
+                      }}
+                    >
+                      {item}
+                    </Text>
+                  ))}
+                </View>
+              </View>
+            </View>
+
+            <Text
+              style={{
+                borderRadius: 1,
+                borderStyle: "dashed",
+                borderColor: "#DCDCDC",
+                height: 1,
+                borderWidth: 0.5,
+                margin: 10,
+              }}
+            />
+
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 5,
+              }}
+            >
+              <Image
+                style={{ width: 160, height: 160 }}
+                source={{
+                  uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/444px-QR_code_for_mobile_English_Wikipedia.svg.png",
+                }}
+              />
+            </View>
+
+            <Text
+              style={{ fontSize: 16, fontWeight: "500", textAlign: "center" }}
+            >
+              {code}
+            </Text>
+            <Text
+              style={{
+                borderRadius: 1,
+                borderStyle: "dashed",
+                borderColor: "#DCDCDC",
+                height: 1,
+                borderWidth: 0.5,
+                margin: 10,
+              }}
+            />              
+            </View>            
+          </View>
+
           <View
             style={{
               padding: 18,
+              flexDirection: "row",
+              justifyContent: "space-evenly",
             }}
           >
             <TouchableHighlight
@@ -177,19 +284,10 @@ export default class TicketCard extends Component {
               style={{
                 backgroundColor: "black",
                 borderRadius: 100,
+                width: 160,
                 paddingVertical: 10,
                 paddingHorizontal: 15,
                 alignItems: "center",
-              }}
-              onPressIn={() => {
-                this.props.navigation.navigate("Theatre", {
-                  genre: genre,
-                  name: title,
-                  timeSelected: time,
-                  tableSeats: seats,
-                  date: selectedDate,
-                  image: poster,
-                });
               }}
               onPress={this.props.onClose}
             >
@@ -199,7 +297,30 @@ export default class TicketCard extends Component {
                   fontSize: 18,
                 }}
               >
-                Select Seats
+                Download
+              </Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              underlayColor="red"
+              style={{
+                backgroundColor: "black",
+                borderRadius: 100,
+                paddingVertical: 10,
+                width: 160,
+                paddingHorizontal: 15,
+                alignItems: "center",
+              }}
+              onPressIn={()=> cancelTicket(code)}
+              onPress={this.props.onClose}
+            >
+              <Text
+                style={{
+                  color: "#FFFFFF",
+                  fontSize: 18,
+                }}
+              >
+                Cancel Ticket
               </Text>
             </TouchableHighlight>
           </View>

@@ -16,7 +16,6 @@ const defaultHeight = height * 0.55;
 let selectedDate = "";
 
 export default class Card extends Component {
-
   state = {
     // Animates slide ups and downs when popup open or closed
     position: new Animated.Value(this.props.isOpen ? 0 : height),
@@ -47,9 +46,15 @@ export default class Card extends Component {
       Animated.parallel(
         [
           // Animate opacity
-          Animated.timing(this.state.opacity, { toValue: 0.5 }),
+          Animated.timing(this.state.opacity, {
+            toValue: 0.5,
+            useNativeDriver: true,
+          }),
           // And slide up
-          Animated.timing(this.state.position, { toValue: 0 }),
+          Animated.timing(this.state.position, {
+            toValue: 0,
+            useNativeDriver: true,
+          }),
         ],
         { useNativeDriver: true }
       ).start();
@@ -60,9 +65,15 @@ export default class Card extends Component {
   animateClose() {
     Animated.parallel(
       [
-        Animated.timing(this.state.opacity, { toValue: 0 }),
+        Animated.timing(this.state.opacity, {
+          toValue: 0,
+          useNativeDriver: true,
+        }),
         // Slide down
-        Animated.timing(this.state.position, { toValue: height }),
+        Animated.timing(this.state.position, {
+          toValue: height,
+          useNativeDriver: true,
+        }),
       ],
       { useNativeDriver: true }
     ).start(() =>
@@ -75,10 +86,10 @@ export default class Card extends Component {
   }
 
   render() {
-    const { movie, onBook } = this.props;
+    const { movie } = this.props;
 
     // Pull out movie data
-    const { title, genre, poster, time, seats, hall } = movie || {};
+    const { title, genre, poster, time, seats } = movie || {};
     // Render nothing if not visible
     if (!this.state.visible) {
       return null;
@@ -106,7 +117,13 @@ export default class Card extends Component {
           ]}
         >
           {/* Content */}
-          <View style={styles.content}>
+          <View
+            style={{
+              flex: 1,
+              margin: 20,
+              marginBottom: 0,
+            }}
+          >
             {/* Movie poster, title and genre */}
             <View style={styles.movieContainer}>
               <View style={styles.imageContainer}>
@@ -226,14 +243,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject, // fill up all screen
     backgroundColor: "black",
   },
-  // Popup
   modal: {
     backgroundColor: "white",
-  },
-  content: {
-    flex: 1,
-    margin: 20,
-    marginBottom: 0,
   },
   // Movie container
   movieContainer: {

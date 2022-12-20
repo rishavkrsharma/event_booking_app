@@ -236,7 +236,6 @@ const HomeScreen = () => {
                         genre: item.genre,
                         time: item.timing,
                         seats: item.tableData,
-                        hall: item.hallName,
                       });
                       openMovie(cardData);
                     }}

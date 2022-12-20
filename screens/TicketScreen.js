@@ -9,8 +9,6 @@ const TicketScreen = () => {
   const { ticket } = useContext(MoviesCards);
   const route = useRoute();
   const ticketDetails = route.params;
-  const code = Math.random().toString(36).substring(6).toUpperCase();
-  const idno = Math.random().toString(36).substring(3).toUpperCase();
 
   useEffect(() => {
     const loadTicket = () => {
@@ -244,7 +242,7 @@ const TicketScreen = () => {
                 ID NO
               </Text>
               <Text style={{ color: "white", fontSize: 16, fontWeight: "500" }}>
-                {idno}
+                {route.params.id}
               </Text>
             </View>
           </View>
@@ -278,7 +276,7 @@ const TicketScreen = () => {
         </View>
 
         <Text style={{ fontSize: 16, fontWeight: "500", textAlign: "center" }}>
-          {code}
+          {route.params.code}
         </Text>
         <Text
           style={{
