@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "event-book",
-    "slug": "event-book",
+    "name": "Eventers",
+    "slug": "eventers",
+    "description": "This is an app to book tickets for events.",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

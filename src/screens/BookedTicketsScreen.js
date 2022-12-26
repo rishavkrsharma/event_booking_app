@@ -1,6 +1,6 @@
-import { Image, Pressable, SafeAreaView, Text, View } from "react-native";
 import React, { useContext, useState } from "react";
-import { MoviesCards } from "../Context";
+import { Image, Pressable, SafeAreaView, Text, View } from "react-native";
+import { EventsCards } from "../Context";
 import { Ionicons } from "@expo/vector-icons";
 import { FlatList } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
@@ -8,7 +8,7 @@ import moment from "moment";
 import TicketCard from "../components/TicketCard";
 
 const BookedTicketsScreen = () => {
-  const { ticket, setTicket } = useContext(MoviesCards);
+  const { ticket, setTicket } = useContext(EventsCards);
   const navigation = useNavigation();
   const [cardData, setCardData] = useState([]);
   const [card, setCard] = useState(false);
@@ -31,9 +31,8 @@ const BookedTicketsScreen = () => {
     });
   };
 
-  const filters = (genre) => {
-    setList(ticket);
-    setList(list.filter((list) => list.genre == genre));
+  const openFilter = () => {
+    this.ActionSheet.show();
   };
 
   return (

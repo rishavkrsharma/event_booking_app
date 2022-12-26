@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import {
   Animated,
   Dimensions,
@@ -17,40 +17,31 @@ let selectedDate = "";
 
 export default class Card extends Component {
   state = {
-    // Animates slide ups and downs when popup open or closed
     position: new Animated.Value(this.props.isOpen ? 0 : height),
-    // Backdrop opacity
     opacity: new Animated.Value(0),
-    // Popup height that can be changed by pulling it up or down
     height: defaultHeight,
-    // Visibility flag
     visible: this.props.isOpen,
   };
 
-  // Handle isOpen changes to either open or close popup
+  
   UNSAFE_componentWillReceiveProps(nextProps) {
-    // isOpen prop changed to true from false
     if (!this.props.isOpen && nextProps.isOpen) {
       this.animateOpen();
     }
-    // isOpen prop changed to false from true
     else if (this.props.isOpen && !nextProps.isOpen) {
       this.animateClose();
     }
   }
 
-  // Open popup
+  
   animateOpen() {
-    // Update state first
     this.setState({ visible: true }, () => {
       Animated.parallel(
         [
-          // Animate opacity
           Animated.timing(this.state.opacity, {
             toValue: 0.5,
             useNativeDriver: true,
           }),
-          // And slide up
           Animated.timing(this.state.position, {
             toValue: 0,
             useNativeDriver: true,
@@ -61,7 +52,7 @@ export default class Card extends Component {
     });
   }
 
-  // Close popup
+  
   animateClose() {
     Animated.parallel(
       [
@@ -69,7 +60,6 @@ export default class Card extends Component {
           toValue: 0,
           useNativeDriver: true,
         }),
-        // Slide down
         Animated.timing(this.state.position, {
           toValue: height,
           useNativeDriver: true,
@@ -78,7 +68,6 @@ export default class Card extends Component {
       { useNativeDriver: true }
     ).start(() =>
       this.setState({
-        // Reset to default values
         height: defaultHeight,
         visible: false,
       })
@@ -86,11 +75,9 @@ export default class Card extends Component {
   }
 
   render() {
-    const { movie } = this.props;
-
-    // Pull out movie data
-    const { title, genre, poster, time, seats } = movie || {};
-    // Render nothing if not visible
+    const { event } = this.props;
+    const { title, genre, poster, time, seats } = event || {};
+    
     if (!this.state.visible) {
       return null;
     }
@@ -106,9 +93,7 @@ export default class Card extends Component {
           style={[
             styles.modal,
             {
-              // Animates height
               height: this.state.height,
-              // Animates position on the screen
               transform: [
                 { translateY: this.state.position },
                 { translateX: 0 },
@@ -116,7 +101,6 @@ export default class Card extends Component {
             },
           ]}
         >
-          {/* Content */}
           <View
             style={{
               flex: 1,
@@ -124,7 +108,6 @@ export default class Card extends Component {
               marginBottom: 0,
             }}
           >
-            {/* Movie poster, title and genre */}
             <View style={styles.movieContainer}>
               <View style={styles.imageContainer}>
                 <Image source={{ uri: poster }} style={styles.image} />
@@ -153,7 +136,6 @@ export default class Card extends Component {
               </View>
             </View>
 
-            {/* Showtimes */}
             <View>
               <Text
                 style={{
@@ -232,30 +214,27 @@ export default class Card extends Component {
 }
 
 const styles = StyleSheet.create({
-  // Main container
   container: {
-    ...StyleSheet.absoluteFillObject, // fill up all screen
-    justifyContent: "flex-end", // align popup at the bottom
-    backgroundColor: "transparent", // transparent background
+    ...StyleSheet.absoluteFillObject, 
+    justifyContent: "flex-end", 
+    backgroundColor: "transparent", 
   },
-  // Semi-transparent background below popup
   backdrop: {
-    ...StyleSheet.absoluteFillObject, // fill up all screen
+    ...StyleSheet.absoluteFillObject, 
     backgroundColor: "black",
   },
   modal: {
     backgroundColor: "white",
   },
-  // Movie container
   movieContainer: {
-    flex: 1, // take up all available space
+    flex: 1,
     marginBottom: 20,
   },
   imageContainer: {
-    flex: 1, // take up all available space
+    flex: 1,
   },
   image: {
-    borderRadius: 10, // rounded corners
-    ...StyleSheet.absoluteFillObject, // fill up all space in a container
+    borderRadius: 10,
+    ...StyleSheet.absoluteFillObject,
   },
 });

@@ -14,9 +14,11 @@
     "@react-navigation/stack": "^6.3.9",
     "expo": "~47.0.8",
     "expo-status-bar": "~1.4.2",
+    "expo-updates": "~0.15.6",
     "moment-jalaali": "^0.9.6",
     "react": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-actionsheet": "^2.4.2",
     "react-native-gesture-handler": "~2.8.0",
     "react-native-loading-spinner-overlay": "^3.0.1",
     "react-native-reanimated-zoom": "^0.3.3"

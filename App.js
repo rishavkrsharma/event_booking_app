@@ -1,19 +1,12 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { MovieContext } from "./Context";
-// import BookedTicket from "./screens/BookedTicket";
-import StackNavigator from "./StackNavigator";
+import { EventContext } from "./src/Context";
+import StackNavigator from "./src/navigation/StackNavigator";
 
 export default function App() {
   return (
     <>
-      <MovieContext>
-          <StackNavigator />
-          {/* <Test/> */}
-          {/* <BookedTicket/> */}
-          {/* <StatusBar style="auto" /> */}
-      </MovieContext>
+      <EventContext>
+        <StackNavigator />
+      </EventContext>
     </>
   );
 }
-

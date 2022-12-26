@@ -6,7 +6,6 @@ export default [
     image: "https://img.youtube.com/vi/jtmu9MOJOFI/sddefault.jpg",
     genre: "Play",
     timing: "7:15 AM",
-    hallName: "Hall 1",
     tableData: [
       { idx: 0, seat: "A0" },
       { idx: 1, seat: "A1" },
@@ -167,7 +166,6 @@ export default [
     image: "https://img.youtube.com/vi/ZOfavB9TrII/sddefault.jpg",
     genre: "Comedy",
     timing: "8:15 AM",
-    hallName: "Veenaa",
     tableData: [
       { idx: 0, seat: "A0" },
       { idx: 1, seat: "A1" },
@@ -328,7 +326,6 @@ export default [
     image: "https://img.youtube.com/vi/FVNutqX-JP4/sddefault.jpg",
     genre: "Play",
     timing: "9:15 AM",
-    hallName: "New chtri",
     tableData: [
       { idx: 0, seat: "A0" },
       { idx: 1, seat: "A1" },
@@ -489,7 +486,6 @@ export default [
     image: "https://img.youtube.com/vi/dP_CoXkarSo/sddefault.jpg",
     genre: "Movie",
     timing: "10:15 AM",
-    hallName: "Raj Delux",
     tableData: [
       { idx: 0, seat: "A0" },
       { idx: 1, seat: "A1" },
@@ -649,8 +645,7 @@ export default [
     language: "Hindi | English",
     image: "https://img.youtube.com/vi/FVNutqX-JP4/sddefault.jpg",
     genre: "Comedy",
-    timing: "10:15 AM",
-    hallName: "Opop",
+    timing: "12:15 AM",
     tableData: [
       { idx: 0, seat: "A0" },
       { idx: 1, seat: "A1" },
@@ -811,7 +806,6 @@ export default [
     image: "https://img.youtube.com/vi/pe5ZXN4Wg4E/sddefault.jpg",
     genre: "Play",
     timing: "2:15 PM",
-    hallName: "Mona",
     tableData: [
       { idx: 0, seat: "A0" },
       { idx: 1, seat: "A1" },
@@ -972,7 +966,6 @@ export default [
     image: "https://img.youtube.com/vi/c7QYEedjb_o/sddefault.jpg",
     genre: "Comedy",
     timing: "3:15 PM",
-    hallName: "PVR",
     tableData: [
       { idx: 0, seat: "A0" },
       { idx: 1, seat: "A1" },
@@ -1133,7 +1126,6 @@ export default [
     image: "https://img.youtube.com/vi/CuyHogczkvw/sddefault.jpg",
     genre: "Movie",
     timing: "5:15 PM",
-    hallName: "Cinepollis",
     tableData: [
       { idx: 0, seat: "A0" },
       { idx: 1, seat: "A1" },

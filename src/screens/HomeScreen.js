@@ -1,30 +1,21 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Pressable,
-  Image,
-  ImageBackground,
-} from "react-native";
+import { Text, View, Pressable, Image, ImageBackground } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
-import { MoviesCards } from "../Context";
-import movies from "../data/movies";
 import { useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
+import { EventsCards } from "../Context";
+import events from "../../assets/data/events";
 import Card from "../components/Card";
-import { useIsFocused } from '@react-navigation/native';
 
 const HomeScreen = () => {
-  const data = movies;
-  const { ticket } = useContext(MoviesCards);
+  const data = events;
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const { ticket } = useContext(EventsCards);
   const [list, setList] = useState(data);
   const [filterActive, setFilterActive] = useState(false);
-  const [filterName, setFilterName] = useState("");
-  const [card, setCard] = useState(false);
-  const navigation = useNavigation();
   const [cardData, setCardData] = useState([]);
-  const isFocused = useIsFocused();
+  const [card, setCard] = useState(false);
   let ticketCount;
 
   const types = [
@@ -43,7 +34,6 @@ const HomeScreen = () => {
   ];
 
   const filters = (genre) => {
-    // console.log(genre);
     if (!filterActive) {
       setList(data);
       setList(list.filter((list) => list.genre == genre));
@@ -54,21 +44,21 @@ const HomeScreen = () => {
     }
   };
 
-  const openMovie = (movie) => {
-    setCard(true), movie;
+  const openMovie = (event) => {
+    setCard(true), event;
   };
 
   const closeMovie = () => {
     setCard(false);
   };
 
-  const countTicket =()=>{
+  const countTicket = () => {
     ticketCount = ticket.length;
-  }
+  };
 
   useEffect(() => {
-    isFocused && countTicket()
-  },[isFocused]);
+    isFocused && countTicket();
+  }, [isFocused]);
 
   return (
     <View
@@ -76,7 +66,7 @@ const HomeScreen = () => {
     >
       <View>
         <ImageBackground
-          source={require("../assets/wallpaper.jpg")}
+          source={require("../../assets/wallpaper.jpg")}
           style={{
             width: "100%",
             height: 200,
@@ -268,7 +258,7 @@ const HomeScreen = () => {
 
       <Card
         navigation={navigation}
-        movie={cardData}
+        event={cardData}
         isOpen={card}
         onClose={closeMovie}
       />

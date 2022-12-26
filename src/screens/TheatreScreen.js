@@ -1,22 +1,16 @@
-import {
-  Text,
-  View,
-  FlatList,
-  Pressable,
-} from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
 import React, { useContext, useState } from "react";
+import { Text, View, FlatList, Pressable } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { MoviesCards } from "../Context";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import Spinner from "react-native-loading-spinner-overlay";
+import { EventsCards } from "../Context";
 
 const TheatreScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const [spin, setSpin] = useState(false);
-  const { seats, setSeats, occupied } = useContext(MoviesCards);
+  const { seats, setSeats, occupied } = useContext(EventsCards);
   const displaySeats = [...seats];
   const fee = 87;
   const noOfSeats = seats.length;
@@ -46,8 +40,8 @@ const TheatreScreen = () => {
   };
 
   const subscribe = () => {
-    if(seats.length == 0){
-      alert('Please select Seats');
+    if (seats.length == 0) {
+      alert("Please select Seats");
     } else {
       setSpin(true);
       occupied.push(...seats);
@@ -67,7 +61,7 @@ const TheatreScreen = () => {
         });
       }, 2000);
       setSeats([]);
-    }    
+    }
   };
 
   return (

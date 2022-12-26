@@ -2,11 +2,11 @@ import { Text, View, SafeAreaView, Image, Pressable } from "react-native";
 import React, { useEffect, useContext } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import moment from "moment";
-import { MoviesCards } from "../Context";
+import { EventsCards } from "../Context";
 
 const TicketScreen = () => {
   const navigation = useNavigation();
-  const { ticket } = useContext(MoviesCards);
+  const { ticket } = useContext(EventsCards);
   const route = useRoute();
   const ticketDetails = route.params;
 
@@ -16,15 +16,16 @@ const TicketScreen = () => {
     };
     loadTicket();
   }, []);
-  
+
   return (
-    <SafeAreaView style={{ marginTop: 35 }}>
+    <SafeAreaView style={{ marginTop: 35, backgroundColor: "#77DD77" }}>
       <View
         style={{
           backgroundColor: "white",
+          opacity: 100,
           height: "90%",
           margin: 10,
-          borderRadius: 6,
+          borderRadius: 10,
         }}
       >
         <View
@@ -38,7 +39,6 @@ const TicketScreen = () => {
           <Text style={{ fontSize: 16, fontWeight: "500" }} numberOfLines={1}>
             {route.params.name}
           </Text>
-          
         </View>
 
         <View
@@ -173,7 +173,7 @@ const TicketScreen = () => {
         <View
           style={{
             height: 140,
-            backgroundColor: "#8DA399",
+            backgroundColor: "gray",
             borderRadius: 6,
             margin: 10,
           }}
@@ -278,16 +278,6 @@ const TicketScreen = () => {
         <Text style={{ fontSize: 16, fontWeight: "500", textAlign: "center" }}>
           {route.params.code}
         </Text>
-        <Text
-          style={{
-            borderRadius: 1,
-            borderStyle: "dashed",
-            borderColor: "#DCDCDC",
-            height: 1,
-            borderWidth: 0.5,
-            margin: 10,
-          }}
-        />
       </View>
       <View
         style={{
@@ -297,37 +287,36 @@ const TicketScreen = () => {
         }}
       >
         <Pressable
-        onPress={() => navigation.navigate("Home")}
-        style={{
-          backgroundColor: "black",
-          marginLeft: "auto",
-          marginRight: "auto",
-          width: 150,
-          borderRadius: 20,
-          padding: 10,
-        }}
-      >
-        <Text style={{ textAlign: "center", color: "white", fontSize: 15 }}>
-          Home
-        </Text>
-      </Pressable>
-      <Pressable
-        onPress={() => navigation.navigate("BookedTickets")}
-        style={{
-          backgroundColor: "black",
-          marginLeft: "auto",
-          marginRight: "auto",
-          width: 150,
-          borderRadius: 20,
-          padding: 10,
-        }}
-      >
-        <Text style={{ textAlign: "center", color: "white", fontSize: 15 }}>
-          All Tickets
-        </Text>
-      </Pressable>
+          onPress={() => navigation.navigate("Home")}
+          style={{
+            backgroundColor: "black",
+            marginLeft: "auto",
+            marginRight: "auto",
+            width: 150,
+            borderRadius: 20,
+            padding: 10,
+          }}
+        >
+          <Text style={{ textAlign: "center", color: "white", fontSize: 15 }}>
+            Home
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={() => navigation.navigate("BookedTickets")}
+          style={{
+            backgroundColor: "black",
+            marginLeft: "auto",
+            marginRight: "auto",
+            width: 150,
+            borderRadius: 20,
+            padding: 10,
+          }}
+        >
+          <Text style={{ textAlign: "center", color: "white", fontSize: 15 }}>
+            All Tickets
+          </Text>
+        </Pressable>
       </View>
-      
     </SafeAreaView>
   );
 };

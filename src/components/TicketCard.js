@@ -66,7 +66,7 @@ export default class TicketCard extends Component {
   }
 
   render() {
-    const { movie, cancelTicket } = this.props;
+    const { movie, cancelTicket, download } = this.props;
 
     const { title, poster, genre, time, date, seats, price, total, code } =
       movie || {};
@@ -258,17 +258,7 @@ export default class TicketCard extends Component {
               style={{ fontSize: 16, fontWeight: "500", textAlign: "center" }}
             >
               {code}
-            </Text>
-            <Text
-              style={{
-                borderRadius: 1,
-                borderStyle: "dashed",
-                borderColor: "#DCDCDC",
-                height: 1,
-                borderWidth: 0.5,
-                margin: 10,
-              }}
-            />              
+            </Text>             
             </View>            
           </View>
 
@@ -297,7 +287,7 @@ export default class TicketCard extends Component {
                   fontSize: 18,
                 }}
               >
-                Download
+                Close
               </Text>
             </TouchableHighlight>
 
